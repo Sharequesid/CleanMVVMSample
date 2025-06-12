@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(),PokedexAdapter.OnClickListener{
         lifecycleScope.launch {
             viewModel.getAllPokemon()
 
-            viewModel.pokemonLiveData.observe( this@MainActivity , Observer { it->
+            viewModel.pokLiveData.observe( this@MainActivity , Observer { it->
                 when(it){
                     is NetworkResult.Error -> {
                         Toast.makeText(mContext,"Error",Toast.LENGTH_LONG).show()

@@ -1,20 +1,24 @@
 package com.example.cleanmvvmsample.ui
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cleanmvvmsample.repository.MainRepository
+import com.example.cleanmvvmsample.model.PokedexResponse
+import com.example.cleanmvvmsample.usecase.GetAllPokemonUseCase
+import com.example.cleanmvvmsample.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val mainRepository: MainRepository): ViewModel() {
+class MainViewModel @Inject constructor(private val getAllPokemonUseCase: GetAllPokemonUseCase): ViewModel() {
 
-    val pokemonLiveData get() = mainRepository.pokLiveData
+    private val _pokLiveData = MutableLiveData<NetworkResult<PokedexResponse>>()
+    val pokLiveData get() = _pokLiveData
 
     fun getAllPokemon() {
         viewModelScope.launch {
-            mainRepository.getPokemon()
+            pokLiveData.value = getAllPokemonUseCase()
         }
     }
 
